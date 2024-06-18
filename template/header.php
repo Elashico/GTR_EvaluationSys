@@ -1,3 +1,14 @@
+<?php
+
+    $conn = mysqli_connect("localhost","gtr-test","qwerty","db_gtr_evalsys");
+    if (!$conn) {
+        echo "DB connection error" . mysqli_connect_error();
+    }
+
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
