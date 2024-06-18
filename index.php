@@ -7,7 +7,7 @@
 </div>
 
 <div class="login-container text-center"></div>
-    <form action="./empsearch.php" method="$_GET">
+    <form action="./emprecord.php" method="$_GET">
         <fieldset class="text-center d-flex flex-column mb-3" id="fd-login">
             <legend class="h5">Enter Required: </legend>
             <input class="mb-3" type="text" placeholder="Username" required />
