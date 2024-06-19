@@ -1,0 +1,92 @@
+<?php
+require('./template/header.php');
+?>
+
+<div style="display: flex;">
+    <div style="width: 25%;">
+        <?php require('./empsearch.php'); ?>
+    </div>
+    <div style="width: 75%;" id="employeeRecords">
+        <?php
+
+        // Check if an employee is selected and fetch the corresponding details
+        if (isset($_GET['emp_id']) && !empty($_GET['emp_id'])) {
+            $empId = intval($_GET['emp_id']);
+            
+            // Fetch employee details
+            $sql = "SELECT e.*, p.position FROM tbl_employee e 
+                    JOIN tbl_positions p ON e.pos_id = p.pos_id 
+                    WHERE e.emp_id = $empId";
+            $employeeResult = mysqli_query($conn, $sql);
+
+            if ($row = mysqli_fetch_assoc($employeeResult)) {
+                echo '<h2>Employee Details</h2>';
+                echo '<p>Name: ' . htmlspecialchars($row['emp_lname'] . ', ' . $row['emp_fname'] .' '. $row['emp_minitial']) . '.</p>';
+                echo '<p>Position: ' . htmlspecialchars($row['position']) . '</p>';
+                echo '<p>Date Hired: ' . htmlspecialchars($row['emp_date_hired']) . '</p>';
+            } else {
+                echo 'Employee not found.';
+            }
+
+            // Fetch evaluation periods for the dropdown
+            $periodSql = "SELECT period_id, period FROM tbl_eval_period";
+            $periodsResult = mysqli_query($conn, $periodSql);
+
+            echo '<form action="" method="GET">';
+            echo '<input type="hidden" name="emp_id" value="' . $empId . '">';
+            echo '<select name="period_id" onchange="this.form.submit()">';
+            echo '<option value="">Select Evaluation Period</option>';
+
+            if (mysqli_num_rows($periodsResult) > 0) {
+                while ($periodRow = mysqli_fetch_assoc($periodsResult)) {
+                    $selected = isset($_GET['period_id']) && $_GET['period_id'] == $periodRow['period_id'] ? ' selected' : '';
+                    echo '<option value="' . htmlspecialchars($periodRow['period_id']) . '"' . $selected . '>' . htmlspecialchars($periodRow['period']) . '</option>';
+                }
+            } else {
+                echo '<option value="">No periods found</option>';
+            }
+
+            echo '</select>';
+            echo '</form>';
+
+            // Check if a period is selected and fetch the corresponding evaluation details
+            if (isset($_GET['period_id']) && !empty($_GET['period_id'])) {
+                $periodId = intval($_GET['period_id']);
+                $evaluationSql = "SELECT * FROM tbl_evaluation 
+                                  WHERE emp_id = $empId AND period_id = $periodId";
+                $evaluationResult = mysqli_query($conn, $evaluationSql);
+
+                $supervisorCount = 0;
+
+                echo '<h2>Evaluation Details</h2>';
+
+                while ($evaluationRow = mysqli_fetch_assoc($evaluationResult)) {
+                    $supervisorCount++;
+                    echo '<h3>Evaluation ' . $supervisorCount . '</h3>';
+                    echo '<p>Supervisor Count: ' . htmlspecialchars($evaluationRow['supi_count']) . '</p>';
+                    for ($i = 1; $i <= 13; $i++) {
+                        echo '<p>Question ' . $i . ' Score: ' . htmlspecialchars($evaluationRow['s' . $i]) . '</p>';
+                    }
+                    echo '<p>Violation Comments: ' . htmlspecialchars($evaluationRow['violation_comment']) . '</p>';
+                    echo '<p>Recommendation Comments: ' . htmlspecialchars($evaluationRow['comment_recc']) . '</p>';
+                    echo '<hr>'; // Separator between evaluations
+                }
+
+                if ($supervisorCount == 0) {
+                    echo 'No evaluations found for the selected period.';
+                } else {
+                    echo '<p>Total evaluations done for this period: ' . $supervisorCount . ' out of 6</p>';
+                }
+            }
+        } else {
+            echo 'Select an employee to view details.';
+        }
+
+        mysqli_close($conn); // Close the database connection
+        ?>
+    </div>
+</div>
+
+<?php
+require('./template/footer.php');
+?>

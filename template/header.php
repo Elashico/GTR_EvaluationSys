@@ -5,7 +5,6 @@
         echo "DB connection error" . mysqli_connect_error();
     }
 
-
 ?>
 
 

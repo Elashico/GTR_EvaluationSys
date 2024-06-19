@@ -1,19 +1,18 @@
 <?php
-require('./template/header.php');
+    require('./template/header.php');
+
 ?>
 
 <div class="container">
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-3">
             <?php require('./empsearch.php'); ?>
         </div>
         <div class="col-md-8" id="employeeRecords">
             <?php
-            // Check if an employee is selected and fetch the corresponding details
             if (isset($_GET['emp_id']) && !empty($_GET['emp_id'])) {
                 $empId = intval($_GET['emp_id']);
 
-                // Fetch employee details
                 $sql = "SELECT e.*, p.position FROM tbl_employee e 
                         JOIN tbl_positions p ON e.pos_id = p.pos_id 
                         WHERE e.emp_id = $empId";
@@ -28,7 +27,6 @@ require('./template/header.php');
                     echo 'Employee not found.';
                 }
 
-                // Fetch evaluation periods for the dropdown
                 $periodSql = "SELECT period_id, period FROM tbl_eval_period";
                 $periodsResult = mysqli_query($conn, $periodSql);
 
@@ -52,19 +50,19 @@ require('./template/header.php');
                 echo '</div>';
                 echo '</form>';
 
-                // Check if a period is selected and fetch the corresponding evaluation details
                 if (isset($_GET['period_id']) && !empty($_GET['period_id'])) {
                     $periodId = intval($_GET['period_id']);
                     $evaluationSql = "SELECT * FROM tbl_evaluation 
                                       WHERE emp_id = $empId AND period_id = $periodId";
                     $evaluationResult = mysqli_query($conn, $evaluationSql);
 
-                    // Initialize arrays to hold the scores and comments
                     $evaluations = [];
                     $comments = [];
+                    $evaluatorCount = 0;
 
                     while ($evaluationRow = mysqli_fetch_assoc($evaluationResult)) {
                         $supCount = $evaluationRow['supi_count'];
+                        $evaluatorCount = max($evaluatorCount, $supCount);
                         for ($i = 1; $i <= 13; $i++) {
                             $evaluations[$i][$supCount] = $evaluationRow['s' . $i];
                         }
@@ -75,81 +73,75 @@ require('./template/header.php');
                     }
 
                     echo '<h2>Evaluation Details</h2>';
-echo '<div class="table-responsive">';
-echo '<table class="table table-bordered">';
-echo '<thead class="thead-light">';
-echo '<tr>';
-echo '<th scope="col">Question</th>';
-for ($i = 1; $i <= 6; $i++) {
-    echo '<th scope="col">Evaluator ' . $i . '</th>';
-}
-echo '</tr>';
-echo '</thead>';
-echo '<tbody>';
+                    echo '<div class="table-responsive">';
+                    echo '<table class="table table-bordered">';
+                    echo '<thead class="thead-light">';
+                    echo '<tr>';
+                    echo '<th scope="col">Question</th>';
+                    for ($i = 1; $i <= 6; $i++) {
+                        echo '<th scope="col">Evaluator ' . $i . '</th>';
+                    }
+                    echo '</tr>';
+                    echo '</thead>';
+                    echo '<tbody>';
 
-// Display questions and scores
-$questions = [
-    1 => 'Eksakto at maayos na pagsunod sa mga proseso…',
-    2 => 'Alam ang mga proseso at standards ng kanyang…',
-    3 => 'Propesyonal na pakikitungo at may respeto…',
-    4 => 'Bukas ang isipan at may kakayahang  matuto…',
-    5 => 'Hindi umaabsent/lumiliban sa trabaho ng walang…',
-    6 => 'Kinakabisado, isinasapuso at sinusunod ang mga…',
-    7 => 'Sinisiguradong ligtas ang area na pinagtatrabahuan…',
-    8 => 'Malinis ang pangangatawan at tama ang gupit at…',
-    9 => 'Mabilis gumalaw, maaasahan at nagkukusang…',
-    10 => 'Nililinis at inaayos ang mga kagamitang ginagamit…',
-    11 => 'Mabilis matuto at may kakayahan ding ituro ang…',
-    12 => 'Madami ang natatapos na trabaho sa loob ng duty…',
-    13 => 'Pinipili ang mga trabaho na dapat unahin at…'
-];
+                    $questions = [
+                        1 => 'Eksakto at maayos na pagsunod sa mga proseso…',
+                        2 => 'Alam ang mga proseso at standards ng kanyang…',
+                        3 => 'Propesyonal na pakikitungo at may respeto…',
+                        4 => 'Bukas ang isipan at may kakayahang  matuto…',
+                        5 => 'Hindi umaabsent/lumiliban sa trabaho ng walang…',
+                        6 => 'Kinakabisado, isinasapuso at sinusunod ang mga…',
+                        7 => 'Sinisiguradong ligtas ang area na pinagtatrabahuan…',
+                        8 => 'Malinis ang pangangatawan at tama ang gupit at…',
+                        9 => 'Mabilis gumalaw, maaasahan at nagkukusang…',
+                        10 => 'Nililinis at inaayos ang mga kagamitang ginagamit…',
+                        11 => 'Mabilis matuto at may kakayahan ding ituro ang…',
+                        12 => 'Madami ang natatapos na trabaho sa loob ng duty…',
+                        13 => 'Pinipili ang mga trabaho na dapat unahin at…'
+                    ];
 
-$evaluatorSums = array_fill(1, 6, 0); // Array to store sums for each evaluator
-$evaluatorCounts = array_fill(1, 6, 0); // Array to count filled out columns for averaging
+                    $evaluatorSums = array_fill(1, 6, 0);
+                    $evaluatorCounts = array_fill(1, 6, 0);
 
-foreach ($questions as $qNum => $qText) {
-    echo '<tr>';
-    echo '<th scope="row">' . htmlspecialchars($qText) . '</th>';
+                    foreach ($questions as $qNum => $qText) {
+                        echo '<tr>';
+                        echo '<th scope="row">' . htmlspecialchars($qText) . '</th>';
 
-    for ($i = 1; $i <= 6; $i++) {
-        $score = isset($evaluations[$qNum][$i]) ? htmlspecialchars($evaluations[$qNum][$i]) : '';
-        if (!empty($score)) {
-            $evaluatorSums[$i] += intval($score);
-            $evaluatorCounts[$i]++;
-        }
-        echo '<td>' . $score . '</td>';
-    }
+                        for ($i = 1; $i <= 6; $i++) {
+                            $score = isset($evaluations[$qNum][$i]) ? htmlspecialchars($evaluations[$qNum][$i]) : '';
+                            if (!empty($score)) {
+                                $evaluatorSums[$i] += intval($score);
+                                $evaluatorCounts[$i]++;
+                            }
+                            echo '<td>' . $score . '</td>';
+                        }
 
-    echo '</tr>';
-}
+                        echo '</tr>';
+                    }
 
-// Add row for sums
-echo '<tr>';
-echo '<th scope="row">Sum</th>';
-foreach ($evaluatorSums as $sum) {
-    echo '<td>' . $sum . '</td>';
-}
-echo '</tr>';
+                    echo '<tr>';
+                    echo '<th scope="row">Sum</th>';
+                    foreach ($evaluatorSums as $sum) {
+                        echo '<td>' . $sum . '</td>';
+                    }
+                    echo '</tr>';
 
-// Add row for averages
-echo '<tr>';
-echo '<th scope="row">Average</th>';
-foreach ($evaluatorSums as $i => $sum) {
-    if ($evaluatorCounts[$i] > 0) {
-        $average = $sum / $evaluatorCounts[$i] * 10;
-        echo '<td>' . number_format($average, 2) . '</td>';
-    } else {
-        echo '<td></td>'; // Placeholder for empty columns
-    }
-}
-echo '</tr>';
+                    echo '<tr>';
+                    echo '<th scope="row">Average</th>';
+                    foreach ($evaluatorSums as $i => $sum) {
+                        if ($evaluatorCounts[$i] > 0) {
+                            $average = $sum / $evaluatorCounts[$i] * 10;
+                            echo '<td>' . number_format($average, 2) . '</td>';
+                        } else {
+                            echo '<td></td>';
+                        }
+                    }
+                    echo '</tr>';
 
-echo '</tbody>';
-echo '</table>';
-echo '</div>';
-
-                    
-
+                    echo '</tbody>';
+                    echo '</table>';
+                    echo '</div>';
 
                     echo '<h3>Comments</h3>';
                     for ($i = 1; $i <= 6; $i++) {
@@ -168,17 +160,33 @@ echo '</div>';
                             echo '<p>No comments provided.</p>';
                         }
                     }
+
+                    if ($evaluatorCount < 6) {
+                        echo '<button type="button" class="btn btn-primary" onclick="openEvaluationWindow()">Add Evaluation</button>';
+                    } else {
+                        echo '<button type="button" class="btn btn-primary" disabled>Max Evaluations Reached</button>';
+                    }
                 }
             } else {
                 echo 'Select an employee to view details.';
             }
 
-            mysqli_close($conn); // Close the database connection
+            mysqli_close($conn);
             ?>
         </div>
     </div>
 </div>
 
+<script>
+function openEvaluationWindow() {
+    const empId = <?php echo isset($empId) ? $empId : 'null'; ?>;
+    const periodId = <?php echo isset($periodId) ? $periodId : 'null'; ?>;
+    if (empId && periodId) {
+        window.open(`./add_evaluation.php?emp_id=${empId}&period_id=${periodId}`, 'Add Evaluation', 'width=600,height=400');
+    }
+}
+</script>
+
 <?php
-require('./template/footer.php');
+    require('./template/footer.php');
 ?>
