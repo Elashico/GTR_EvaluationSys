@@ -15,6 +15,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GT-Evaluation</title>
 
+    <!-- icon  -->
+    <link rel="icon" href="./styles/people_icon.svg">
     <!-- stles  -->
     <link href="./styles/stylesmain.css" rel="stylesheet" type="text/css" />
     <!-- bootstrap  -->

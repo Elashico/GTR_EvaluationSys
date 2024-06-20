@@ -42,8 +42,8 @@ $questions = [
 ?>
 
 <div class="container">
-    <h2>Add Evaluation</h2>
-    <h3>Evaluator <?php echo $supervisorCount?></h3>
+    <h2 class="display-3 text-center">Add Evaluation</h2>
+    <h2 class="display-6 text-center">You are evaluator <?php echo $supervisorCount?></h2>
     <form action="save_evaluation.php" method="POST">
         <input type="hidden" name="emp_id" value="<?php echo $empId; ?>">
         <input type="hidden" name="period_id" value="<?php echo $periodId; ?>">
@@ -51,23 +51,25 @@ $questions = [
 
         <!-- Display questions and input fields for scores -->
         <?php foreach ($questions as $qNum => $qText): ?>
-            <div class="form-group">
-                <label for="s<?php echo $qNum; ?>"><?php echo htmlspecialchars($qText); ?>:</label>
-                <input type="number" class="form-control" name="s<?php echo $qNum; ?>" id="s<?php echo $qNum; ?>" required>
+            <div class="form-group mt-3 lead">
+                <label for="s<?php echo $qNum; ?>"><?php echo htmlspecialchars($qText); ?> (1-10)</label>
+                <input type="number" class="form-control" name="s<?php echo $qNum; ?>" id="s<?php echo $qNum; ?>" min="1" max="10" required>
             </div>
         <?php endforeach; ?>
 
-        <div class="form-group">
+        <div class="form-group lead">
             <label for="violation_comment">Violation Comment:</label>
             <textarea class="form-control" name="violation_comment" id="violation_comment"></textarea>
         </div>
 
-        <div class="form-group">
+        <div class="form-group lead">
             <label for="comment_recc">Recommendation Comment:</label>
             <textarea class="form-control" name="comment_recc" id="comment_recc"></textarea>
         </div>
-
-        <button type="submit" class="btn btn-primary">Save Evaluation</button>
+        <div class="text-center">
+            <button type="submit" class="btn btn-primary m-3">Save Evaluation</button>
+        </div>
+        
     </form>
 </div>
 

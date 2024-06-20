@@ -1,6 +1,5 @@
 <?php
     require('./template/header.php');
-
 ?>
 
 <div class="container">
@@ -19,10 +18,11 @@
                 $employeeResult = mysqli_query($conn, $sql);
 
                 if ($row = mysqli_fetch_assoc($employeeResult)) {
-                    echo '<h2>Employee Details</h2>';
-                    echo '<p>Name: ' . htmlspecialchars($row['emp_lname'] . ', ' . $row['emp_fname'] . ' ' . $row['emp_minitial']) . '.</p>';
-                    echo '<p>Position: ' . htmlspecialchars($row['position']) . '</p>';
-                    echo '<p>Date Hired: ' . htmlspecialchars($row['emp_date_hired']) . '</p>';
+                    echo '<h1 class="display-5 mt-3 fw-medium">Employee Details</h1>';
+                    echo '<hr>';
+                    echo '<p class="lead"> Name: ' . htmlspecialchars($row['emp_lname'] . ', ' . $row['emp_fname'] . ' ' . $row['emp_minitial']) . '.</p>';
+                    echo '<p class="lead"> Position: ' . htmlspecialchars($row['position']) . '</p>';
+                    echo '<p class="lead"> Date Hired: ' . htmlspecialchars($row['emp_date_hired']) . '</p>';
                 } else {
                     echo 'Employee not found.';
                 }
@@ -32,10 +32,10 @@
 
                 echo '<form action="" method="GET">';
                 echo '<input type="hidden" name="emp_id" value="' . $empId . '">';
-                echo '<div class="form-group">';
-                echo '<label for="period_id">Select Evaluation Period:</label>';
-                echo '<select class="form-control" name="period_id" id="period_id" onchange="this.form.submit()">';
-                echo '<option value="">Select Evaluation Period</option>';
+                echo '<div class="input-group mb-3">';
+                echo '<label for="period_id" class="input-group-text lead" >Evaluation Period</label>';
+                echo '<select class="form-select" name="period_id" id="period_id" onchange="this.form.submit()">';
+                echo '<option value="">select evaluation period</option>';
 
                 if (mysqli_num_rows($periodsResult) > 0) {
                     while ($periodRow = mysqli_fetch_assoc($periodsResult)) {
@@ -49,6 +49,7 @@
                 echo '</select>';
                 echo '</div>';
                 echo '</form>';
+                echo '<hr class="my-4">';
 
                 if (isset($_GET['period_id']) && !empty($_GET['period_id'])) {
                     $periodId = intval($_GET['period_id']);
@@ -77,9 +78,9 @@
                     echo '<table class="table table-bordered">';
                     echo '<thead class="thead-light">';
                     echo '<tr>';
-                    echo '<th scope="col">Question</th>';
+                    echo '<th scope="col" class="display-6 text-center">Question</th>';
                     for ($i = 1; $i <= 6; $i++) {
-                        echo '<th scope="col">Evaluator ' . $i . '</th>';
+                        echo '<th scope="col" class="lead text-center fs-6 fw-semibold">Evaluator ' . $i . '</th>';
                     }
                     echo '</tr>';
                     echo '</thead>';
@@ -106,7 +107,7 @@
 
                     foreach ($questions as $qNum => $qText) {
                         echo '<tr>';
-                        echo '<th scope="row">' . htmlspecialchars($qText) . '</th>';
+                        echo '<th scope="row" class="lead fs-6">' . htmlspecialchars($qText) . '</th>';
 
                         for ($i = 1; $i <= 6; $i++) {
                             $score = isset($evaluations[$qNum][$i]) ? htmlspecialchars($evaluations[$qNum][$i]) : '';
@@ -114,25 +115,25 @@
                                 $evaluatorSums[$i] += intval($score);
                                 $evaluatorCounts[$i]++;
                             }
-                            echo '<td>' . $score . '</td>';
+                            echo '<td class="text-center fs-5 text-danger">' . $score . '</td>';
                         }
 
                         echo '</tr>';
                     }
 
                     echo '<tr>';
-                    echo '<th scope="row">Sum</th>';
+                    echo '<th scope="row" class="fs-5 fw-semibold text-center">Sum</th>';
                     foreach ($evaluatorSums as $sum) {
-                        echo '<td>' . $sum . '</td>';
+                        echo '<td class="text-center fs-5 fw-bold text-success-emphasis">' . $sum . '</td>';
                     }
                     echo '</tr>';
 
                     echo '<tr>';
-                    echo '<th scope="row">Average</th>';
+                    echo '<th scope="row" class="fs-5 fw-semibold text-center" >Average</th>';
                     foreach ($evaluatorSums as $i => $sum) {
                         if ($evaluatorCounts[$i] > 0) {
                             $average = $sum / $evaluatorCounts[$i] * 10;
-                            echo '<td>' . number_format($average, 2) . '</td>';
+                            echo '<td class="text-center fs-5 fw-bold text-success-emphasis">' . number_format($average, 2) . '</td>';
                         } else {
                             echo '<td></td>';
                         }
@@ -143,29 +144,49 @@
                     echo '</table>';
                     echo '</div>';
 
-                    echo '<h3>Comments</h3>';
+                    // Compute the final average score
+                    $totalAverageSum = 0;
+                    $numberOfEvaluators = 0;
+                    foreach ($evaluatorSums as $i => $sum) {
+                        if ($evaluatorCounts[$i] > 0) {
+                            $totalAverageSum += $sum / $evaluatorCounts[$i];
+                            $numberOfEvaluators++;
+                        }
+                    }
+                    $finalAverageScore = ($numberOfEvaluators > 0) ? ($totalAverageSum / $numberOfEvaluators) * 10 : 0;
+                    
+                    // Display the final average score
+                    echo '<div>';
+                    echo '<h3>Final Average Score: ' . number_format($finalAverageScore, 2) . '</h3>';
+                    echo '</div>';
+                    echo '<hr>';
+
+                    echo '<h3 class="mb-3">Comments</h3>';
                     for ($i = 1; $i <= 6; $i++) {
                         if (isset($comments[$i])) {
-                            echo '<h4>Evaluator ' . $i . '</h4>';
+                            echo '<h4 class="lead fw-semibold">Evaluator ' . $i . '</h4>';
                             echo '<ul>';
                             if (!empty($comments[$i]['violation_comment'])) {
-                                echo '<li>Violation Comment: ' . htmlspecialchars($comments[$i]['violation_comment']) . '</li>';
+                                echo '<li>Violations: ' . htmlspecialchars($comments[$i]['violation_comment']) . '</li>';
                             }
                             if (!empty($comments[$i]['comment_recc'])) {
-                                echo '<li>Recommendation Comment: ' . htmlspecialchars($comments[$i]['comment_recc']) . '</li>';
+                                echo '<li>Comment: ' . htmlspecialchars($comments[$i]['comment_recc']) . '</li>';
                             }
                             echo '</ul>';
                         } else {
-                            echo '<h4>Evaluator ' . $i . '</h4>';
+                            echo '<h4 class="lead fw-semibold">Evaluator ' . $i . '</h4>';
                             echo '<p>No comments provided.</p>';
                         }
                     }
 
+                    echo '<hr>';
+
                     if ($evaluatorCount < 6) {
-                        echo '<button type="button" class="btn btn-primary" onclick="openEvaluationWindow()">Add Evaluation</button>';
+                        echo '<button type="button" class="btn btn-outline-danger mb-3 btn-lg" onclick="openEvaluationWindow()">Add Evaluation</button>';
                     } else {
-                        echo '<button type="button" class="btn btn-primary" disabled>Max Evaluations Reached</button>';
+                        echo '<button type="button" class="btn btn-outline-danger mb-3 btn-lg" disabled>Max Evaluations Reached</button>';
                     }
+
                 }
             } else {
                 echo 'Select an employee to view details.';

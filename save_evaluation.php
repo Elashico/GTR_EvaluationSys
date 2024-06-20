@@ -73,4 +73,5 @@ if (
 } else {
     die('Invalid parameters or missing form data.');
 }
+
 ?>
