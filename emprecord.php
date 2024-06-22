@@ -2,9 +2,9 @@
     require('./template/header.php');
 ?>
 
-<div class="container">
+<div class="">
     <div class="row">
-        <div class="col-md-3">
+        <div class="col-md-3 side_navigation sticky-sm-top">
             <?php require('./empsearch.php'); ?>
         </div>
         <div class="col-md-8" id="employeeRecords">
@@ -20,7 +20,7 @@
                 if ($row = mysqli_fetch_assoc($employeeResult)) {
                     echo '<h1 class="display-5 mt-3 fw-medium">Employee Details</h1>';
                     echo '<hr>';
-                    echo '<p class="lead"> Name: ' . htmlspecialchars($row['emp_lname'] . ', ' . $row['emp_fname'] . ' ' . $row['emp_minitial']) . '.</p>';
+                    echo '<p class="lead text-capitalize"> Name: ' . htmlspecialchars($row['emp_lname'] . ', ' . $row['emp_fname'] . ' ' . $row['emp_minitial']) . '.</p>';
                     echo '<p class="lead"> Position: ' . htmlspecialchars($row['position']) . '</p>';
                     echo '<p class="lead"> Date Hired: ' . htmlspecialchars($row['emp_date_hired']) . '</p>';
                 } else {
@@ -87,19 +87,19 @@
                     echo '<tbody>';
 
                     $questions = [
-                        1 => 'Eksakto at maayos na pagsunod sa mga proseso…',
-                        2 => 'Alam ang mga proseso at standards ng kanyang…',
-                        3 => 'Propesyonal na pakikitungo at may respeto…',
-                        4 => 'Bukas ang isipan at may kakayahang  matuto…',
-                        5 => 'Hindi umaabsent/lumiliban sa trabaho ng walang…',
-                        6 => 'Kinakabisado, isinasapuso at sinusunod ang mga…',
-                        7 => 'Sinisiguradong ligtas ang area na pinagtatrabahuan…',
-                        8 => 'Malinis ang pangangatawan at tama ang gupit at…',
-                        9 => 'Mabilis gumalaw, maaasahan at nagkukusang…',
-                        10 => 'Nililinis at inaayos ang mga kagamitang ginagamit…',
-                        11 => 'Mabilis matuto at may kakayahan ding ituro ang…',
-                        12 => 'Madami ang natatapos na trabaho sa loob ng duty…',
-                        13 => 'Pinipili ang mga trabaho na dapat unahin at…'
+                        1 => 'Eksakto at maayos na pagsunod sa mga proseso at standards ng trabaho na naaayon sa pangangailangan ng Supervisor at Management.',
+                        2 => 'Alam ang mga proseso at standards ng kanyang trabaho',
+                        3 => 'Propesyonal na pakikitungo at may respeto sa mga supervisor, kapwa empleyado at maging sa customers.',
+                        4 => 'Bukas ang isipan at may kakayahang  matuto sa tuing pinagsasabihan, itinatama, at tinuturuan ng mga supervisor at ibang kasamahan sa trabaho; Hindi agad pinapairal ang emosyon kapag pinagsasabihan, binibigyang payo at hindi pala-reklamo.',
+                        5 => 'Hindi umaabsent/lumiliban sa trabaho ng walang paalam at hindi nalelate. Dumarating sa trabaho ng nakahanda at sinusunod ang mga reminders, announcements, memorandum at iba pang palatuntunin ng supervisors at ng kompanya.',
+                        6 => 'Kinakabisado, isinasapuso at sinusunod ang mga reminders, announcements, memorandum at iba pang palatuntunin ng supervisors at ng kompanya.',
+                        7 => 'Sinisiguradong ligtas ang area na pinagtatrabahuan. Umiiwas sa aksidene at ma-ingat na ginagawa ang trabaho.',
+                        8 => 'Malinis ang pangangatawan at tama ang gupit at at pag-ahit. Sinusuot ang tamang uniporme at presentable',
+                        9 => 'Mabilis gumalaw, maasahan at nagkukusang tumulong sa mga katrabaho sa mga oras na hindi busy.',
+                        10 => 'Nililinis at inaayos ang mga kagamiting ginagamit pati na din ang kanyang work area.',
+                        11 => 'Mabilis matuto at may kakayahan ding ituro ang mga gawain sa iba.',
+                        12 => 'Madami ang natatapos na trabaho sa loob ng duty at handa ring sundin ang ipinag-uutos ng mga supervisor at ng mga nakakataas.',
+                        13 => 'Pinipili ang mga trabaho na dapat unahin at handing magtrabaho nang lampas sa nakatakdang oras.'
                     ];
 
                     $evaluatorSums = array_fill(1, 6, 0);
@@ -203,7 +203,7 @@ function openEvaluationWindow() {
     const empId = <?php echo isset($empId) ? $empId : 'null'; ?>;
     const periodId = <?php echo isset($periodId) ? $periodId : 'null'; ?>;
     if (empId && periodId) {
-        window.open(`./add_evaluation.php?emp_id=${empId}&period_id=${periodId}`, 'Add Evaluation', 'width=600,height=400');
+        window.open(`./add_evaluation.php?emp_id=${empId}&period_id=${periodId}`, 'Add Evaluation', 'width=900,height=500');
     }
 }
 </script>

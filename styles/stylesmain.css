@@ -1,18 +1,31 @@
-body{
-    margin: 0;
-    padding: 0 30px;
+html{
+    scrollbar-width: none;
 }
 
-#fd-login{
-    justify-content:center;
-    border: 3px solid #222;
-    padding: 20px;
+.side_navigation{
+    background-color: whitesmoke;
     width: fit-content;
-    height:auto;
+    height: 100vh;
+    padding: 0 15px !important;
 }
-legend{
-    padding: 10px;
-    font-size: 18px;
-    letter-spacing: 0.1em;
-    text-align: center;
+.emp_list{
+    max-height: 500px;
+}
+
+.nSid{
+    width: 96.5px;
+}
+
+@media (max-width: 850px){ 
+    .side_navigation{
+        background-color: whitesmoke;
+        width: fit-content;
+        height: fit-content !important;
+        padding: 0 0 20px 0;
+        border-radius: 30px;
+    }
+    .emp_list{
+        max-height: 200px;
+    }
+    
 }

@@ -9,7 +9,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $sql = "INSERT INTO tbl_eval_period (period) VALUES ('$periodString')";
     if (mysqli_query($conn, $sql)) {
-        echo "<script>alert('New evaluation period added successfully'); window.close();</script>";
+        echo "<script>alert('New period added successfully'); window.close();</script>";
     } else {
         echo "Error: " . mysqli_error($conn);
     }
@@ -18,6 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <div class="container">
     <h2 class="mt-3">Add New Evaluation Period</h2>
+    <hr>
     <form action="" method="POST">
         <div class="form-group">
             <label for="period">Period</label>
@@ -26,11 +27,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <option value="June - Dec">June - Dec</option>
             </select>
         </div>
-        <div class="form-group">
+        <div class="mt-3 form-group">
             <label for="year">Year</label>
             <input type="number" name="year" class="form-control" id="year" min="2024" max="2100" required>
         </div>
-        <button type="submit" class="btn btn-primary">Add Period</button>
+        <div class="text-center mt-3">
+            <button type="submit" class="btn btn-outline-primary">Add Period</button>
+        </div>
     </form>
 </div>
 
