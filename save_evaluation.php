@@ -64,7 +64,7 @@ if (
     if (mysqli_stmt_error($stmt)) {
         die('Error executing MySQL statement: ' . mysqli_stmt_error($stmt));
     } else {
-        echo 'Evaluation saved successfully.';
+        echo "<script>alert('Evaluation SAVED');window.close();</script>";
     }
     
     // Close statement and connection

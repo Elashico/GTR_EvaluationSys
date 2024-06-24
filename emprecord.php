@@ -18,11 +18,11 @@
                 $employeeResult = mysqli_query($conn, $sql);
 
                 if ($row = mysqli_fetch_assoc($employeeResult)) {
-                    echo '<h1 class="display-5 mt-3 fw-medium">Employee Details</h1>';
+                    echo '<h1 class="lead mt-3 fw-medium fs-4">Employee Details</h1>';
                     echo '<hr>';
-                    echo '<p class="lead text-capitalize"> Name: ' . htmlspecialchars($row['emp_lname'] . ', ' . $row['emp_fname'] . ' ' . $row['emp_minitial']) . '.</p>';
-                    echo '<p class="lead"> Position: ' . htmlspecialchars($row['position']) . '</p>';
-                    echo '<p class="lead"> Date Hired: ' . htmlspecialchars($row['emp_date_hired']) . '</p>';
+                    echo '<p class="lead text-capitalize fs-5"> Name: <strong>' . htmlspecialchars($row['emp_lname'] . ', ' . $row['emp_fname'] . ' ' . $row['emp_minitial']) . '.</strong></p>';
+                    echo '<p class="lead fs-5" > Position: <strong>' . htmlspecialchars($row['position']) . '</strong></p>';
+                    echo '<p class="lead fs-5"> Date Hired: <strong>' . htmlspecialchars($row['emp_date_hired']) . '</strong></p>';
                 } else {
                     echo 'Employee not found.';
                 }
@@ -73,12 +73,12 @@
                         ];
                     }
 
-                    echo '<h2>Evaluation Details</h2>';
+                    echo '<h1 class="lead mb-3 fw-medium fs-4">Evaluation</h1>';
                     echo '<div class="table-responsive">';
                     echo '<table class="table table-bordered">';
                     echo '<thead class="thead-light">';
                     echo '<tr>';
-                    echo '<th scope="col" class="display-6 text-center">Question</th>';
+                    echo '<th scope="col" class="lead fs-3 text-center">Question</th>';
                     for ($i = 1; $i <= 6; $i++) {
                         echo '<th scope="col" class="lead text-center fs-6 fw-semibold">Evaluator ' . $i . '</th>';
                     }
@@ -86,28 +86,14 @@
                     echo '</thead>';
                     echo '<tbody>';
 
-                    $questions = [
-                        1 => 'Eksakto at maayos na pagsunod sa mga proseso at standards ng trabaho na naaayon sa pangangailangan ng Supervisor at Management.',
-                        2 => 'Alam ang mga proseso at standards ng kanyang trabaho',
-                        3 => 'Propesyonal na pakikitungo at may respeto sa mga supervisor, kapwa empleyado at maging sa customers.',
-                        4 => 'Bukas ang isipan at may kakayahang  matuto sa tuing pinagsasabihan, itinatama, at tinuturuan ng mga supervisor at ibang kasamahan sa trabaho; Hindi agad pinapairal ang emosyon kapag pinagsasabihan, binibigyang payo at hindi pala-reklamo.',
-                        5 => 'Hindi umaabsent/lumiliban sa trabaho ng walang paalam at hindi nalelate. Dumarating sa trabaho ng nakahanda at sinusunod ang mga reminders, announcements, memorandum at iba pang palatuntunin ng supervisors at ng kompanya.',
-                        6 => 'Kinakabisado, isinasapuso at sinusunod ang mga reminders, announcements, memorandum at iba pang palatuntunin ng supervisors at ng kompanya.',
-                        7 => 'Sinisiguradong ligtas ang area na pinagtatrabahuan. Umiiwas sa aksidene at ma-ingat na ginagawa ang trabaho.',
-                        8 => 'Malinis ang pangangatawan at tama ang gupit at at pag-ahit. Sinusuot ang tamang uniporme at presentable',
-                        9 => 'Mabilis gumalaw, maasahan at nagkukusang tumulong sa mga katrabaho sa mga oras na hindi busy.',
-                        10 => 'Nililinis at inaayos ang mga kagamiting ginagamit pati na din ang kanyang work area.',
-                        11 => 'Mabilis matuto at may kakayahan ding ituro ang mga gawain sa iba.',
-                        12 => 'Madami ang natatapos na trabaho sa loob ng duty at handa ring sundin ang ipinag-uutos ng mga supervisor at ng mga nakakataas.',
-                        13 => 'Pinipili ang mga trabaho na dapat unahin at handing magtrabaho nang lampas sa nakatakdang oras.'
-                    ];
+                    require('./questions.php');
 
                     $evaluatorSums = array_fill(1, 6, 0);
                     $evaluatorCounts = array_fill(1, 6, 0);
 
                     foreach ($questions as $qNum => $qText) {
                         echo '<tr>';
-                        echo '<th scope="row" class="lead fs-6">' . htmlspecialchars($qText) . '</th>';
+                        echo '<th scope="row" class="lead fs-6 fw-normal">' . htmlspecialchars($qText) . '</th>';
 
                         for ($i = 1; $i <= 6; $i++) {
                             $score = isset($evaluations[$qNum][$i]) ? htmlspecialchars($evaluations[$qNum][$i]) : '';
@@ -156,12 +142,16 @@
                     $finalAverageScore = ($numberOfEvaluators > 0) ? ($totalAverageSum / $numberOfEvaluators) * 10 : 0;
                     
                     // Display the final average score
-                    echo '<div>';
-                    echo '<h3>Final Average Score: ' . number_format($finalAverageScore, 2) . '</h3>';
+                    echo '<div class="text-end">';
+                    echo '<h3 class="fs-3">Final Score: <strong class="fs-2">' . number_format($finalAverageScore, 2) . '</strong></h3>';
                     echo '</div>';
                     echo '<hr>';
 
-                    echo '<h3 class="mb-3">Comments</h3>';
+
+                    echo '<div>';
+                        echo '<section class="text-center">';
+                            echo '<h3 class="mb-3">Comments</h3>';
+                        echo '</section>';
                     for ($i = 1; $i <= 6; $i++) {
                         if (isset($comments[$i])) {
                             echo '<h4 class="lead fw-semibold">Evaluator ' . $i . '</h4>';
@@ -175,18 +165,27 @@
                             echo '</ul>';
                         } else {
                             echo '<h4 class="lead fw-semibold">Evaluator ' . $i . '</h4>';
-                            echo '<p>No comments provided.</p>';
+                            echo '<p class="text-secondary">No comments provided.</p>';
                         }
                     }
 
+                    echo '</div>';
                     echo '<hr>';
 
+                    echo '<div class="mb-3 text-end">';
                     if ($evaluatorCount < 6) {
-                        echo '<button type="button" class="btn btn-outline-danger mb-3 btn-lg" onclick="openEvaluationWindow()">Add Evaluation</button>';
+                        echo '<button type="button" class="btn btn-outline-danger btn-lg" onclick="openEvaluationWindow()">Add Evaluation</button>';
                     } else {
-                        echo '<button type="button" class="btn btn-outline-danger mb-3 btn-lg" disabled>Max Evaluations Reached</button>';
+                        echo '<button type="button" class="btn btn-outline-danger btn-lg" disabled>Max Evaluations Reached</button>';
                     }
+                        echo '<button type="button" class="btn btn-outline-secondary ms-4 btn-lg" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-title="Print" onclick="openPrintWindow()">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-printer-fill" viewBox="0 0 16 16">
+                            <path d="M5 1a2 2 0 0 0-2 2v1h10V3a2 2 0 0 0-2-2zm6 8H5a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-3a1 1 0 0 0-1-1"/>
+                            <path d="M0 7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2h-1v-2a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v2H2a2 2 0 0 1-2-2zm2.5 1a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1"/>
+                        </svg></button>';
+                     echo '</div>';
 
+                        
                 }
             } else {
                 echo 'Select an employee to view details.';
@@ -204,6 +203,13 @@ function openEvaluationWindow() {
     const periodId = <?php echo isset($periodId) ? $periodId : 'null'; ?>;
     if (empId && periodId) {
         window.open(`./add_evaluation.php?emp_id=${empId}&period_id=${periodId}`, 'Add Evaluation', 'width=900,height=500');
+    }
+}
+function openPrintWindow() {
+    const empId = <?php echo isset($empId) ? $empId : 'null'; ?>;
+    const periodId = <?php echo isset($periodId) ? $periodId : 'null'; ?>;
+    if (empId && periodId) {
+        window.open(`./print_employee.php?emp_id=${empId}&period_id=${periodId}`, 'Print Employee', 'width=900,height=500');
     }
 }
 </script>
