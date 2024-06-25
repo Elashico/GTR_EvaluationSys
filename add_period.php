@@ -31,7 +31,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <label for="year">Year</label>
             <input type="number" name="year" class="form-control" id="year" min="2024" max="2100" required>
         </div>
-        <div class="text-center mt-3">
+        <hr>
+        <div class="text-center mt-4">
             <button type="submit" class="btn btn-outline-primary">Add Period</button>
         </div>
     </form>

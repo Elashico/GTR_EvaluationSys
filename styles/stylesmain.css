@@ -11,15 +11,7 @@ html{
     max-height: 500px;
 }
 .nSid{
-    width: 96.5px;
-}
-
-#p_logo{
-    width: 50px;
-    height: auto;
-}
-.p_header{
-    background-color: aqua;
+    width: 32%;
 }
 
 @media (max-width: 850px){ 

@@ -18,7 +18,19 @@
                 $employeeResult = mysqli_query($conn, $sql);
 
                 if ($row = mysqli_fetch_assoc($employeeResult)) {
-                    echo '<h1 class="lead mt-3 fw-medium fs-4">Employee Details</h1>';
+                    echo '<div class="mt-3 container-fluid d-flex justify-content-between">';
+                        echo '<div class="text-start">';
+                            echo '<h1 class="mt-2 lead fw-medium fs-3">Employee Details</h1>';
+                        echo '</div>';
+                        echo '<div class="text-end">';
+                            echo '<button type="button" class="mt-2 btn btn-outline-danger btn-xm" onclick="confirmDelete()" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-title="Remove Employee">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-fill-x" viewBox="0 0 16 16">
+                                <path d="M11 5a3 3 0 1 1-6 0 3 3 0 0 1 6 0m-9 8c0 1 1 1 1 1h5.256A4.5 4.5 0 0 1 8 12.5a4.5 4.5 0 0 1 1.544-3.393Q8.844 9.002 8 9c-5 0-6 3-6 4"/>
+                                <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7m-.646-4.854.646.647.646-.647a.5.5 0 0 1 .708.708l-.647.646.647.646a.5.5 0 0 1-.708.708l-.646-.647-.646.647a.5.5 0 0 1-.708-.708l.647-.646-.647-.646a.5.5 0 0 1 .708-.708"/>
+                            </svg>
+                            </button>';
+                        echo '</div>';
+                    echo '</div>';
                     echo '<hr>';
                     echo '<p class="lead text-capitalize fs-5"> Name: <strong>' . htmlspecialchars($row['emp_lname'] . ', ' . $row['emp_fname'] . ' ' . $row['emp_minitial']) . '.</strong></p>';
                     echo '<p class="lead fs-5" > Position: <strong>' . htmlspecialchars($row['position']) . '</strong></p>';
@@ -73,7 +85,7 @@
                         ];
                     }
 
-                    echo '<h1 class="lead mb-3 fw-medium fs-4">Evaluation</h1>';
+                    echo '<h1 class="lead ms-3 mb-3 fw-medium fs-4">Evaluation</h1>';
                     echo '<div class="table-responsive">';
                     echo '<table class="table table-bordered">';
                     echo '<thead class="thead-light">';
@@ -150,7 +162,7 @@
 
                     echo '<div>';
                         echo '<section class="text-center">';
-                            echo '<h3 class="mb-3">Comments</h3>';
+                            echo '<h3 class="mb-3 fs-4">Comments</h3>';
                         echo '</section>';
                     for ($i = 1; $i <= 6; $i++) {
                         if (isset($comments[$i])) {
@@ -172,18 +184,18 @@
                     echo '</div>';
                     echo '<hr>';
 
-                    echo '<div class="mb-3 text-end">';
-                    if ($evaluatorCount < 6) {
-                        echo '<button type="button" class="btn btn-outline-danger btn-lg" onclick="openEvaluationWindow()">Add Evaluation</button>';
-                    } else {
-                        echo '<button type="button" class="btn btn-outline-danger btn-lg" disabled>Max Evaluations Reached</button>';
-                    }
-                        echo '<button type="button" class="btn btn-outline-secondary ms-4 btn-lg" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-title="Print" onclick="openPrintWindow()">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-printer-fill" viewBox="0 0 16 16">
-                            <path d="M5 1a2 2 0 0 0-2 2v1h10V3a2 2 0 0 0-2-2zm6 8H5a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-3a1 1 0 0 0-1-1"/>
-                            <path d="M0 7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2h-1v-2a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v2H2a2 2 0 0 1-2-2zm2.5 1a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1"/>
-                        </svg></button>';
-                     echo '</div>';
+                    echo '<div class="my-3 text-end">';
+                        if ($evaluatorCount < 6) {
+                            echo '<button type="button" class="btn btn-outline-success btn-lg" onclick="openEvaluationWindow()">Add Evaluation</button>';
+                        } else {
+                            echo '<button type="button" class="btn btn-outline-success btn-lg" disabled>Max Evaluations Reached</button>';
+                        }
+                            echo '<button type="button" class="btn btn-outline-dark btn-lg ms-4 " data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-title="Print" onclick="openPrintWindow()">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-printer-fill" viewBox="0 0 16 16">
+                                <path d="M5 1a2 2 0 0 0-2 2v1h10V3a2 2 0 0 0-2-2zm6 8H5a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-3a1 1 0 0 0-1-1"/>
+                                <path d="M0 7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2h-1v-2a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v2H2a2 2 0 0 1-2-2zm2.5 1a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1"/>
+                            </svg></button>';
+                    echo '</div>';
 
                         
                 }
@@ -208,8 +220,20 @@ function openEvaluationWindow() {
 function openPrintWindow() {
     const empId = <?php echo isset($empId) ? $empId : 'null'; ?>;
     const periodId = <?php echo isset($periodId) ? $periodId : 'null'; ?>;
+    
     if (empId && periodId) {
-        window.open(`./print_employee.php?emp_id=${empId}&period_id=${periodId}`, 'Print Employee', 'width=900,height=500');
+        let printWindow = window.open(`./print_employee.php?emp_id=${empId}&period_id=${periodId}`, 'Print Employee', 'width=760,height=650');
+        printWindow.onload = function() {
+            printWindow.print();
+        };
+    }
+}
+function confirmDelete() {
+    const empId = <?php echo isset($empId) ? $empId : 'null'; ?>;
+    if (empId) {
+        if (confirm("Are you sure you want to delete this employee [<?php echo htmlspecialchars($row['emp_lname'] . ', ' . $row['emp_fname'] . ' ' . $row['emp_minitial']);?>]? This action cannot be undone.")) {
+            window.location.href = `./del_employee.php?emp_id=${empId}`;
+        }
     }
 }
 </script>
