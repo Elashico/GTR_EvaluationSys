@@ -23,31 +23,18 @@ if ($evaluationResult && mysqli_num_rows($evaluationResult) > 0) {
 $supervisorCount = $lastSupCount + 1;
 
 // Array of questions
-$questions = [
-    1 => 'Eksakto at maayos na pagsunod sa mga proseso at standards ng trabaho na naaayon sa pangangailangan ng Supervisor at Management.',
-    2 => 'Alam ang mga proseso at standards ng kanyang trabaho',
-    3 => 'Propesyonal na pakikitungo at may respeto sa mga supervisor, kapwa empleyado at maging sa customers.',
-    4 => 'Bukas ang isipan at may kakayahang  matuto sa tuing pinagsasabihan, itinatama, at tinuturuan ng mga supervisor at ibang kasamahan sa trabaho; Hindi agad pinapairal ang emosyon kapag pinagsasabihan, binibigyang payo at hindi pala-reklamo.',
-    5 => 'Hindi umaabsent/lumiliban sa trabaho ng walang paalam at hindi nalelate. Dumarating sa trabaho ng nakahanda at sinusunod ang mga reminders, announcements, memorandum at iba pang palatuntunin ng supervisors at ng kompanya.',
-    6 => 'Kinakabisado, isinasapuso at sinusunod ang mga reminders, announcements, memorandum at iba pang palatuntunin ng supervisors at ng kompanya.',
-    7 => 'Sinisiguradong ligtas ang area na pinagtatrabahuan. Umiiwas sa aksidene at ma-ingat na ginagawa ang trabaho.',
-    8 => 'Malinis ang pangangatawan at tama ang gupit at at pag-ahit. Sinusuot ang tamang uniporme at presentable',
-    9 => 'Mabilis gumalaw, maasahan at nagkukusang tumulong sa mga katrabaho sa mga oras na hindi busy.',
-    10 => 'Nililinis at inaayos ang mga kagamiting ginagamit pati na din ang kanyang work area.',
-    11 => 'Mabilis matuto at may kakayahan ding ituro ang mga gawain sa iba.',
-    12 => 'Madami ang natatapos na trabaho sa loob ng duty at handa ring sundin ang ipinag-uutos ng mga supervisor at ng mga nakakataas.',
-    13 => 'Pinipili ang mga trabaho na dapat unahin at handing magtrabaho nang lampas sa nakatakdang oras.'
-];
+require('./questions.php');
 
 ?>
 
 <div class="container">
-    <h2 class="display-3 text-center">Add Evaluation</h2>
+    <h2 class="lead fs-4 text-center">Add Evaluation</h2>
     <h2 class="display-6 text-center">You are evaluator <?php echo $supervisorCount?></h2>
     <form action="save_evaluation.php" method="POST">
         <input type="hidden" name="emp_id" value="<?php echo $empId; ?>">
         <input type="hidden" name="period_id" value="<?php echo $periodId; ?>">
         <input type="hidden" name="supervisor_count" value="<?php echo $supervisorCount; ?>">
+        <hr>
 
         <!-- Display questions and input fields for scores -->
         <?php foreach ($questions as $qNum => $qText): ?>
@@ -66,8 +53,9 @@ $questions = [
             <label for="comment_recc">Recommendation Comment:</label>
             <textarea class="form-control" name="comment_recc" id="comment_recc"></textarea>
         </div>
-        <div class="text-center">
-            <button type="submit" class="btn btn-outline-success m-3">Save Evaluation</button>
+        <div class="text-center m-3">
+            <p class="fs-6 fw-semibold text-danger ">Once <strong class="fs-5">SAVED</strong>, it can <strong class="fs-5">NO</strong> longer be edited.</p>
+            <button type="submit" class="btn btn-outline-success btn-lg">Save Evaluation</button>
         </div>
         
     </form>

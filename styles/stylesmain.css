@@ -1,7 +1,6 @@
 html{
     scrollbar-width: none;
 }
-
 .side_navigation{
     background-color: whitesmoke;
     width: fit-content;
@@ -11,9 +10,8 @@ html{
 .emp_list{
     max-height: 500px;
 }
-
 .nSid{
-    width: 96.5px;
+    width: 32%;
 }
 
 @media (max-width: 850px){ 

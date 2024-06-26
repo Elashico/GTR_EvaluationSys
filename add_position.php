@@ -31,12 +31,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <div class="container">
     <h2 class="mt-3">Add Position</h2>
+    <hr>
     <form action="" method="POST">
         <div class="form-group">
             <label for="position">Position Name</label>
             <input type="text" name="position" class="form-control" id="position" required>
         </div>
-        <div class="text-center">
+        <div class="mt-2 text-center">
             <button type="submit" name="add_position" class="btn btn-outline-primary mt-3">Add Position</button>
         </div>
     </form>
@@ -50,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <label for="position">Position Name</label>
             <input type="text" name="position" class="form-control" id="position" required>
         </div>
-        <div class="text-center">
+        <div class="mt-2 text-center">
             <button type="submit" name="remove_position" class="btn btn-outline-danger my-3">Remove</button>
         </div>
     </form>
