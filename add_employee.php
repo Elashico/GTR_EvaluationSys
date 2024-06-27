@@ -14,7 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
     $sql = "INSERT INTO tbl_employee (emp_fname, emp_lname, emp_minitial, pos_id, emp_date_hired) VALUES ('$fname', '$lname', '$mname', $position, '$date_hired')";
     if (mysqli_query($conn, $sql)) {
-        echo "<script>alert('New employee added successfully [$fname]'); </script>";
+        echo "<script>alert('New employee added successfully [$fname]');window.opener.location.reload(); </script>";
     } else {
         echo "Error: " . mysqli_error($conn);
     }
@@ -25,11 +25,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <h2 class="mt-3">Add New Employee</h2>
     <form action="" method="POST">
         <div class="form-group">
-            <label for="fname">First Name</label>
+            <label for="fname">First Name*</label>
             <input type="text" name="fname" class="form-control" id="fname" required>
         </div>
         <div class="form-group">
-            <label for="lname">Last Name</label>
+            <label for="lname">Last Name*</label>
             <input type="text" name="lname" class="form-control" id="lname" required>
         </div>
         <div class="form-group">
@@ -38,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
         <hr>
         <div class="mt-3 form-group">
-            <label for="position">Position</label>
+            <label for="position">Position*</label>
             <select name="position" class="form-control" id="position" required>
                 <option value="">Select Position</option>
                 <?php
@@ -54,7 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </select>
         </div>
         <div class="mt-3 form-group">
-            <label for="date_hired">Date Hired</label>
+            <label for="date_hired">Date Hired*</label>
             <input type="date" name="date_hired" class="form-control" id="date_hired" required>
         </div>
         <div class="text-center mt-4">

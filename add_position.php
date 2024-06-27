@@ -8,7 +8,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
         $sql_delete_position = "DELETE FROM tbl_positions WHERE position = '$position'";
         if (mysqli_query($conn, $sql_delete_position)) {
-            echo "<script>alert('Position and related records removed successfully [$position]');</script>";
+            echo "<script>alert('Position and related records removed successfully [$position]');window.opener.location.reload();</script>";
         } else {
             echo "Error deleting position: " . mysqli_error($conn);
         }
@@ -21,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $sql = "INSERT INTO tbl_positions (position) VALUES ('$position')";
         if (mysqli_query($conn, $sql)) {
-            echo "<script>alert('New position added successfully [$position]');</script>";
+            echo "<script>alert('New position added successfully [$position]');window.opener.location.reload();</script>";
         } else {
             echo "Error adding position: " . mysqli_error($conn);
         }

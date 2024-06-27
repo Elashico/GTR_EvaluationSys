@@ -1,0 +1,35 @@
+@page {
+    margin: 0.5in !important; 
+}
+#p_body{
+    margin:0 !important;
+    padding:0 !important;
+    page-break-inside: auto;
+}
+#p_logo{
+    margin: 0 0 0.1in 0 !important;
+}
+
+.comment_table tbody{
+    page-break-before: avoid;
+    page-break-inside: auto;
+    page-break-after: auto;
+}
+.comment_table thead{
+    page-break-inside: avoid;
+    page-break-before: auto;
+    page-break-after: avoid;
+}
+
+.ack_table {
+    page-break-before: auto !important;
+    page-break-inside: avoid !important; /* Ensure tables start on a new page if necessary */
+}
+
+.border {
+    border: 1px solid rgb(97, 97, 97) !important; /* Ensure borders are applied */
+}
+#promise{
+    page-break-before: avoid !important;
+    page-break-inside: avoid !important; 
+}

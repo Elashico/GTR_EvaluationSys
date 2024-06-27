@@ -1,0 +1,77 @@
+#p_body{
+    width: 100%;
+    height: fit-content;
+    font-family: Calibri, serif;
+    padding: 0.5in;
+}
+#p_logo{
+    width: 80px;
+    height: auto;
+    margin: -0.2in 0 0.1in 0;
+}
+.p_header {
+    display: flex;
+    align-items: center;
+    justify-content: start; 
+    background-color: white;
+}
+#p_title {
+    margin:-0.2in 0 0 90px;
+    font-size: 20pt;
+    font-weight: bold;
+}
+.evaluation_table tr th,.score_table thead tr th,.score_table tbody tr td,.comment_table tr th,.ack_table tr th{
+    padding: 0 !important;
+    margin: 0 0 1px 0;
+}
+#v_com,#r_com{
+    margin:0;
+    font-weight: normal;
+}
+._det{
+    font-size:10pt ;
+    font-weight: normal;
+}
+._inp{
+    font-weight: normal;
+    text-align: center;
+}
+._ave{
+    font-size:28pt ;
+    font-weight: bold;
+    text-align: center;
+    color: #f00 !important;
+}
+._sum,._score{
+    text-align: center;
+    font-size:12pt ;
+    font-weight: bold;
+}
+._score{
+    color:#1e4e79 !important;
+}
+.pink strong{
+    color: #f00 !important;
+    font-size: 13pt;
+}
+.pink {
+    background-color: #fbe4d5;
+    margin: 0.1in 0;
+    padding: 0;
+}
+.border{
+    border: 1px;
+    margin: 0 0 2px 0;
+    padding-bottom:0 !important;
+    font-weight: bold;
+}
+.blank-cell-1 {
+    height: 80px; 
+    background-color: white; 
+    text-align: center; 
+}
+.blank-cell {
+    height: 40px; 
+    background-color: white; 
+    text-align: center; 
+}

@@ -32,12 +32,11 @@
     <img src="styles/GTRLOGO.png" alt="Company Logo" class="logo">
     <h3 class="display-5 mb-4">Employee Evaluation</h3>
     
-    <form action="./emprecord.php" method="$_GET">
+    <form action="emprecord.php" method="post">
         <fieldset class="text-center d-flex flex-column mb-3">
-            <legend class="h5 mb-3">Enter Credentials: </legend>
             <hr>
-            <input class="mb-3 mt-3 form-control" type="text" placeholder="Username" style="width: 80%; margin-left:10%" required>
-            <input class="mb-3 form-control" type="password" placeholder="Password" style="width: 80%; margin-left:10%" required>
+            <input name="username" class="mb-3 mt-3 form-control" type="text" placeholder="Username" style="width: 80%; margin-left:10%" required>
+            <input name="password" class="mb-3 form-control" type="password" placeholder="Password" style="width: 80%; margin-left:10%" required>
             <button class="mb-3 mt-4 btn btn-outline-dark" type="submit" style="width: 50%; margin-left:25%">Login</button>
         </fieldset>
     </form>

@@ -1,88 +1,29 @@
 <?php
-require('./template/header.php');
+    $conn = mysqli_connect("localhost","gtr-test","qwerty","db_gtr_evalsys");
+    if (!$conn) {
+        echo "DB connection error" . mysqli_connect_error();
+    }
+
 ?>
-<style>
-    #p_body{
-        width: 8.5in;
-        height: 13in;
-        padding: 0.5in;
-        font-family: Calibri, serif;
-    }
-    #p_logo{
-        width: 80px;
-        height: auto;
-        margin: -0.3in 0 0.1in 0;
-    }
-    .p_header {
-        display: flex;
-        align-items: center;
-        justify-content: start; 
-        background-color: white;
-    }
-    #p_title {
-        margin: -0.3in 0 0 85px;
-        font-size: 20pt;
-        font-weight: bold;
-    }
-    .evaluation_table tr th,.score_table thead tr th,.score_table tbody tr td,.comment_table tr th,.ack_table tr th{
-        padding: 0 !important;
-        margin: 0 0 1px 0;
-    }
-    #v_com,#r_com{
-        margin:0;
-        font-weight: normal;
-    }
-    ._det{
-        font-size:10pt ;
-        font-weight: normal;
-    }
-    ._inp{
-        font-weight: normal;
-        text-align: center;
-    }
-    ._ave{
-        font-size:28pt ;
-        font-weight: bold;
-        text-align: center;
-        color: #f00 !important;
-    }
-    ._sum,._score{
-        text-align: center;
-        font-size:12pt ;
-        font-weight: bold;
-    }
-    ._score{
-        color:#1e4e79 !important;
-    }
-    .pink strong{
-        color: #f00 !important;
-        font-size: 13pt;
-    }
-    .pink {
-        background-color: #fbe4d5;
-        margin: 0.1in 0;
-        padding: 0;
-    }
-    .border{
-        border: 1px;
-        margin: 0 0 2px 0;
-        padding-bottom:0 !important;
-        font-weight: bold;
-    }
-    .blank-cell-1 {
-        height: 80px; 
-        background-color: white; 
-        text-align: center; 
-    }
-    .blank-cell {
-        height: 40px; 
-        background-color: white; 
-        text-align: center; 
-    }
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GT-Evaluation</title>
 
-</style>
-
+    <!-- icon  -->
+    <link rel="icon" href="./styles/people_icon.svg">
+    <!-- stles  -->
+    <link href="./printNot.css" rel="stylesheet" type="text/css" media="all"/>
+    <!-- for printing in records only  -->
+    <link href="./print.css" rel="stylesheet" type="text/css" media="print"/>
+    <!-- bootstrap  -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    
+</head>
+<body>
 <div id="p_body">
     <?php
         if (isset($_GET['emp_id']) && !empty($_GET['emp_id']) && isset($_GET['period_id']) && !empty($_GET['period_id'])) {
@@ -141,7 +82,7 @@ require('./template/header.php');
     ?>
 
     <div class="p_header">
-        <img id="p_logo" src="./styles/GTRLOGO.png" alt="">
+        <img id="p_logo" src="../styles/GTRLOGO.png" alt="">
         <h5 class="text-center" id="p_title">EMPLOYEE'S PERFORMANCE EVALUATION</h5>
     </div>
 
@@ -164,7 +105,9 @@ require('./template/header.php');
             <?php 
                 echo '<th colspan="5" class="_inp">'. htmlspecialchars($row['position']).' </th>';
                 echo '<th colspan="2"> DATE HIRED: </th>';
-                echo '<th colspan="2" class="_inp">'. htmlspecialchars($row['emp_date_hired']).' </th>';
+                $date = new DateTime($row['emp_date_hired']);
+                $formatted_date = $date->format('m-d-Y');
+                echo '<th colspan="2" class="_inp">'. htmlspecialchars($formatted_date).' </th>';
             endif;
             ?>
         </tr>
@@ -195,7 +138,7 @@ require('./template/header.php');
         <!-- -------------------------body -->
         <tbody>
             <?php
-                require('./questions.php');
+                require('../questions.php');
 
                 foreach ($questions_ as $qNum => $qText) {
                     echo '<tr>';
@@ -234,40 +177,52 @@ require('./template/header.php');
     </div>
 
     <table class="comment_table table table-bordered">
-        <tr>
-            <th>I. Mga Violations o Paglabag ng Empleyado sa Company Policies at Memorandums</th>
-        </tr>
-        <tr>
-            <th>
-                <?php
-                    for ($i = 1; $i <= 6; $i++) {
-                        if (isset($comments[$i]) && !empty($comments[$i]['violation_comment'])) {
-                            echo '<p id="v_com"> • ' . htmlspecialchars($comments[$i]['violation_comment']) . '</p>';
+        <thead>
+            <tr>
+                <th>I. Mga Violations o Paglabag ng Empleyado sa Company Policies at Memorandums</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th>
+                    <?php
+                        for ($i = 1; $i <= 6; $i++) {
+                            if (isset($comments[$i]) && !empty($comments[$i]['violation_comment'])) {
+                                echo '<p id="v_com"> • ' . htmlspecialchars($comments[$i]['violation_comment']) . '</p>';
+                            }
                         }
-                    }
-                ?>
-            </th>
-        </tr>
-        <tr>
-            <th>II. Mga Komento at Rekomendasyon ng Supervisor/Evaluator para sa Empleyado</th>
-        </tr>
-        <tr>
-            <th>
-                <?php
-                    for ($i = 1; $i <= 6; $i++) {
-                        if (isset($comments[$i]) && !empty($comments[$i]['comment_recc'])) {
-                            echo '<p id="r_com"> • ' . htmlspecialchars($comments[$i]['comment_recc']) . '</p>';
+                    ?>
+                </th>
+            </tr>
+        </tbody>
+        <thead>
+            <tr>
+                <th>II. Mga Komento at Rekomendasyon ng Supervisor/Evaluator para sa Empleyado</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th>
+                    <?php
+                        for ($i = 1; $i <= 6; $i++) {
+                            if (isset($comments[$i]) && !empty($comments[$i]['comment_recc'])) {
+                                echo '<p id="r_com"> • ' . htmlspecialchars($comments[$i]['comment_recc']) . '</p>';
+                            }
                         }
-                    }
-                ?>
-            </th>
-        </tr>
-        <tr>
-            <th>III. Mga Komento at mga Pangako ng Empleyado</th>
-        </tr>
-        <tr> 
-            <th class="blank-cell-1"></th>
-        </tr>
+                    ?>
+                </th>
+            </tr>
+        </tbody>
+        <thead>
+            <tr>
+                <th>III. Mga Komento at mga Pangako ng Empleyado</th>
+            </tr>
+        </thead>
+        <tbody id="promise">
+            <tr> 
+                <th class="blank-cell-1"></th>
+            </tr>
+        </tbody>
     </table>
 
     <div>
@@ -285,5 +240,5 @@ require('./template/header.php');
 </div>
 
 <?php
-require('./template/footer.php');
+require('../template/footer.php');
 ?>

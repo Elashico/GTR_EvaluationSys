@@ -1,8 +1,39 @@
 <?php
     require('./template/header.php');
-?>
 
-<div class="">
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        // Assuming you have established database connection already
+        $username = mysqli_real_escape_string($conn, $_POST['username']);
+        $password = mysqli_real_escape_string($conn, $_POST['password']);
+        
+        $sql = "SELECT * FROM tbl_users WHERE username = '$username' AND password = '$password'";
+        $result = mysqli_query($conn, $sql);
+        
+        if (mysqli_num_rows($result) == 1) {
+            // Login successful
+            // Perform any additional logic or redirection here
+            echo "<script>window.location.href = 'emprecord.php';</script>";
+            exit();
+        } else {
+            // Login failed
+            echo '<script>alert("Invalid username or password"); window.history.back();</script>';
+        }
+    }
+?>
+<style>
+    .body_{
+        max-height: 100vh; /* Adjust this value as needed */
+        overflow-y: auto;
+        scrollbar-width: normal; /* Firefox */
+        scrollbar-color: #595959 #f1f1f1; /* Firefox */
+        overflow-x: hidden;
+    }
+    .body_::-webkit-scrollbar {
+        width: 12px; /* For webkit browsers */
+    }
+</style>
+
+<div class="body_">
     <div class="row">
         <div class="col-md-3 side_navigation sticky-sm-top">
             <?php require('./empsearch.php'); ?>
@@ -20,7 +51,7 @@
                 if ($row = mysqli_fetch_assoc($employeeResult)) {
                     echo '<div class="mt-3 container-fluid d-flex justify-content-between">';
                         echo '<div class="text-start">';
-                            echo '<h1 class="mt-2 lead fw-medium fs-3">Employee Details</h1>';
+                            echo '<h1 class="mt-2 lead fw-medium fs-3">Employee Profile</h1>';
                         echo '</div>';
                         echo '<div class="text-end">';
                             echo '<button type="button" class="mt-2 btn btn-outline-danger btn-xm" onclick="confirmDelete()" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-title="Remove Employee">
@@ -34,32 +65,34 @@
                     echo '<hr>';
                     echo '<p class="lead text-capitalize fs-5"> Name: <strong>' . htmlspecialchars($row['emp_lname'] . ', ' . $row['emp_fname'] . ' ' . $row['emp_minitial']) . '.</strong></p>';
                     echo '<p class="lead fs-5" > Position: <strong>' . htmlspecialchars($row['position']) . '</strong></p>';
-                    echo '<p class="lead fs-5"> Date Hired: <strong>' . htmlspecialchars($row['emp_date_hired']) . '</strong></p>';
+                    $date = new DateTime($row['emp_date_hired']);
+                    $formatted_date = $date->format('m-d-Y');
+                    echo '<p class="lead fs-5"> Date Hired: <strong>' . htmlspecialchars($formatted_date) . '</strong></p>';
                 } else {
                     echo 'Employee not found.';
                 }
 
-                $periodSql = "SELECT period_id, period FROM tbl_eval_period";
+                $periodSql = "SELECT period_id, period FROM tbl_eval_period ORDER BY STR_TO_DATE(SUBSTRING_INDEX(period, ' ', -1), '%Y')";
                 $periodsResult = mysqli_query($conn, $periodSql);
 
                 echo '<form action="" method="GET">';
                 echo '<input type="hidden" name="emp_id" value="' . $empId . '">';
-                echo '<div class="input-group mb-3">';
-                echo '<label for="period_id" class="input-group-text lead" >Evaluation Period</label>';
-                echo '<select class="form-select" name="period_id" id="period_id" onchange="this.form.submit()">';
-                echo '<option value="">select evaluation period</option>';
+                    echo '<div class="input-group mb-3">';
+                        echo '<label for="period_id" class="input-group-text lead" >Evaluation Period</label>';
+                        echo '<select class="form-select" name="period_id" id="period_id" onchange="this.form.submit()">';
+                            echo '<option value="">select evaluation period</option>';
 
-                if (mysqli_num_rows($periodsResult) > 0) {
-                    while ($periodRow = mysqli_fetch_assoc($periodsResult)) {
-                        $selected = isset($_GET['period_id']) && $_GET['period_id'] == $periodRow['period_id'] ? ' selected' : '';
-                        echo '<option value="' . htmlspecialchars($periodRow['period_id']) . '"' . $selected . '>' . htmlspecialchars($periodRow['period']) . '</option>';
-                    }
-                } else {
-                    echo '<option value="">No periods found</option>';
-                }
+                            if (mysqli_num_rows($periodsResult) > 0) {
+                                while ($periodRow = mysqli_fetch_assoc($periodsResult)) {
+                                    $selected = isset($_GET['period_id']) && $_GET['period_id'] == $periodRow['period_id'] ? ' selected' : '';
+                                    echo '<option value="' . htmlspecialchars($periodRow['period_id']) . '"' . $selected . '>' . htmlspecialchars($periodRow['period']) . '</option>';
+                                }
+                            } else {
+                                echo '<option value="">No periods found</option>';
+                            }
 
-                echo '</select>';
-                echo '</div>';
+                        echo '</select>';
+                    echo '</div>';
                 echo '</form>';
                 echo '<hr class="my-4">';
 
@@ -89,12 +122,16 @@
                     echo '<div class="table-responsive">';
                     echo '<table class="table table-bordered">';
                     echo '<thead class="thead-light">';
-                    echo '<tr>';
-                    echo '<th scope="col" class="lead fs-3 text-center">Question</th>';
-                    for ($i = 1; $i <= 6; $i++) {
-                        echo '<th scope="col" class="lead text-center fs-6 fw-semibold">Evaluator ' . $i . '</th>';
-                    }
-                    echo '</tr>';
+                        echo '<tr>';
+                            echo '<th scope="col" class="lead fs-3 text-center"></th>';
+                            echo '<th scope="col" colspan="6" class="lead text-center fs-6 fw-semibold">Evaluator</th>';
+                        echo '</tr>';
+                        echo '<tr>';
+                            echo '<th scope="col" class="lead fs-3 text-center"></th>';
+                            for ($i = 1; $i <= 6; $i++) {
+                                echo '<th scope="col" class="lead text-center fs-6 fw-semibold">' . $i . '</th>';
+                            }
+                        echo '</tr>';
                     echo '</thead>';
                     echo '<tbody>';
 
@@ -120,14 +157,14 @@
                     }
 
                     echo '<tr>';
-                    echo '<th scope="row" class="fs-5 fw-semibold text-center">Sum</th>';
+                    echo '<th scope="row" class="fs-5 fw-semibold text-end">Total</th>';
                     foreach ($evaluatorSums as $sum) {
                         echo '<td class="text-center fs-5 fw-bold text-success-emphasis">' . $sum . '</td>';
                     }
                     echo '</tr>';
 
                     echo '<tr>';
-                    echo '<th scope="row" class="fs-5 fw-semibold text-center" >Average</th>';
+                    echo '<th scope="row" class="fs-5 fw-semibold text-end" >Average</th>';
                     foreach ($evaluatorSums as $i => $sum) {
                         if ($evaluatorCounts[$i] > 0) {
                             $average = $sum / $evaluatorCounts[$i] * 10;
@@ -155,7 +192,7 @@
                     
                     // Display the final average score
                     echo '<div class="text-end">';
-                    echo '<h3 class="fs-3">Final Score: <strong class="fs-2">' . number_format($finalAverageScore, 2) . '</strong></h3>';
+                    echo '<h3 class="fs-3">Average Score: <strong class="fs-2">' . number_format($finalAverageScore, 2) . '</strong></h3>';
                     echo '</div>';
                     echo '<hr>';
 
@@ -214,7 +251,7 @@ function openEvaluationWindow() {
     const empId = <?php echo isset($empId) ? $empId : 'null'; ?>;
     const periodId = <?php echo isset($periodId) ? $periodId : 'null'; ?>;
     if (empId && periodId) {
-        window.open(`./add_evaluation.php?emp_id=${empId}&period_id=${periodId}`, 'Add Evaluation', 'width=900,height=500');
+        window.open(`./add_evaluation.php?emp_id=${empId}&period_id=${periodId}`, 'Add Evaluation', 'width=900,height=760');
     }
 }
 function openPrintWindow() {
@@ -222,7 +259,7 @@ function openPrintWindow() {
     const periodId = <?php echo isset($periodId) ? $periodId : 'null'; ?>;
     
     if (empId && periodId) {
-        let printWindow = window.open(`./print_employee.php?emp_id=${empId}&period_id=${periodId}`, 'Print Employee', 'width=760,height=650');
+        let printWindow = window.open(`./printing/print_employee.php?emp_id=${empId}&period_id=${periodId}`, 'Print Employee', 'width=1000,height=650');
         printWindow.onload = function() {
             printWindow.print();
         };

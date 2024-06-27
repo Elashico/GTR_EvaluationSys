@@ -71,11 +71,13 @@ $positionsResult = mysqli_query($conn, $sql);
     <div class="container-fluid mt-3">
         <div class="overflow-auto emp_list">
             <?php
-            // Check if a position is selected or a search term is provided, and fetch the corresponding employees
             $positionFilter = isset($_GET['position']) && !empty($_GET['position']) ? 'AND pos_id = ' . intval($_GET['position']) : '';
             $searchFilter = isset($_GET['search']) && !empty($_GET['search']) ? "AND (emp_fname LIKE '%" . mysqli_real_escape_string($conn, $_GET['search']) . "%' OR emp_lname LIKE '%" . mysqli_real_escape_string($conn, $_GET['search']) . "%')" : '';
 
-            $sql = "SELECT emp_id, emp_fname, emp_lname FROM tbl_employee WHERE 1=1 $positionFilter $searchFilter";
+            $sql = "SELECT emp_id, emp_fname, emp_lname 
+                    FROM tbl_employee 
+                    WHERE 1=1 $positionFilter $searchFilter
+                    ORDER BY emp_lname ASC";
             $employeesResult = mysqli_query($conn, $sql);
 
             echo '<div id="employeeList" class="mt-3"><ul class="list-group">';
@@ -91,32 +93,24 @@ $positionsResult = mysqli_query($conn, $sql);
             echo '</ul></div>';
             ?>
         </div>
-
-
     </div>
 
 
     <script>
-        // Ensure the DOM is fully loaded before accessing elements
         document.addEventListener("DOMContentLoaded", function() {
-            // Query all elements with data-bs-toggle="tooltip"
             const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
-            // Initialize tooltips
             tooltipTriggerList.forEach(function (tooltipTriggerEl) {
                 new bootstrap.Tooltip(tooltipTriggerEl);
             });
         });
-
         function openNewEmployeeWindow() {
             window.open('add_employee.php', 'Add New Employee', 'width=500,height=500');
         }
-        
         function openNewPositionWindow() {
             window.open('add_position.php', 'Add New Position', 'width=550, height=450');
         }
-
         function openNewPeriodWindow() {
-            window.open('add_period.php', 'Add New Period', 'width=500,height=300');
+            window.open('add_period.php', 'Add New Period', 'width=500,height=510');
         }
     </script>
 </div>
