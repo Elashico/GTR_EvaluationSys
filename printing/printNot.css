@@ -52,16 +52,17 @@
 }
 .pink strong{
     color: #f00 !important;
-    font-size: 13pt;
+    font-size: 12pt;
 }
 .pink {
     background-color: #fbe4d5;
-    margin: 0.1in 0;
-    padding: 0;
+    padding: 0 !important;
+}
+.pink_color {
+    background-color: #fbe4d5;
 }
 .border{
     border: 1px;
-    margin: 0 0 2px 0;
     padding-bottom:0 !important;
     font-weight: bold;
 }

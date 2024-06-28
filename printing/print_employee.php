@@ -86,7 +86,7 @@
         <h5 class="text-center" id="p_title">EMPLOYEE'S PERFORMANCE EVALUATION</h5>
     </div>
 
-    <table class="evaluation_table table table-bordered" border="1" width="100%" height="fit-content">
+    <table class="evaluation_table table-bordered" border="1" width="100%" height="fit-content">
         <tr>
             <th colspan="4">EMPLOYEE'S NAME</th>
             <th colspan="6">EVALUATION PERIOD:</th>
@@ -118,9 +118,9 @@
         </tr>
     </table>
 
-    <p class="text-center pink">Bigyan ng iskor ang empleyado mula: <strong>1</strong> (Pinakamababa) hanggang <strong>10</strong> (Pinakamataas).</p>
+    <p class="text-center pink"style="margin: 10px 0 10px 0 !important;">Bigyan ng iskor ang empleyado mula: <strong>1</strong> (Pinakamababa) hanggang <strong>10</strong> (Pinakamataas).</p>
 
-    <table class="score_table table table-bordered" border="1" width="100%">
+    <table class="score_table table-bordered" border="1" width="100%">
         <thead>
             <tr>
                 <th> </th>
@@ -130,7 +130,7 @@
                 <th> </th>
                 <?php
                     for ($i = 1; $i <= 6; $i++) {
-                        echo '<th class="_sum">' . $i . '</th>';
+                        echo '<th class="_sum pink_color">' . $i . '</th>';
                     }
                 ?>
             </tr>
@@ -142,7 +142,7 @@
 
                 foreach ($questions_ as $qNum => $qText) {
                     echo '<tr>';
-                    echo '<td>' . htmlspecialchars($qText) . '</td>';
+                    echo '<td style="padding-left:5px !important;">' . htmlspecialchars($qText) . '</td>';
                     for ($i = 1; $i <= 6; $i++) {
                         $score = isset($evaluations[$qNum][$i]) ? htmlspecialchars($evaluations[$qNum][$i]) : '';
                         echo '<td class="_score">' . $score . '</td>';
@@ -152,7 +152,7 @@
 
                 // row for sums
                 echo '<tr>';
-                echo '<td class="text-end"><strong>Total</strong></td>';
+                echo '<td class="text-end" style="padding-right:5px !important;"><strong>Total</strong></td>';
                 for ($i = 1; $i <= 6; $i++) {
                     $sum = isset($evaluatorSums[$i]) ? $evaluatorSums[$i] : 0;
                     echo '<td class="_sum"><strong>' . $sum. '</strong></td>';
@@ -161,7 +161,7 @@
 
                 // row for averages
                 echo '<tr>';
-                echo '<td class="text-end"><strong>Average </strong></td>';
+                echo '<td class="text-end" style="padding-right:5px !important;"><strong>Average (per Evaluator)</strong></td>';
                 for ($i = 1; $i <= 6; $i++) {
                     $avg = isset($evaluatorCounts[$i]) && $evaluatorCounts[$i] > 0 ? $evaluatorSums[$i] / $evaluatorCounts[$i] : 0;
                     echo '<td class="_sum"><strong>' . number_format(($avg*10), 2) . '</strong></td>';
@@ -172,11 +172,16 @@
         </tbody>
     </table>         
 
-    <div>
-        <p class="border">PARA LAMANG SA HR/ADMIN OFFICER:</p>
+    <div style="margin: 10px 0;">
+    <table class="comment_table table-bordered" border="1" width="100%">
+        <thead>
+            <tr>
+                <th>PARA LAMANG SA HR/ADMIN OFFICER:</th>
+            </tr>
+        </thead>
     </div>
 
-    <table class="comment_table table table-bordered">
+    <table class="comment_table table-bordered" border="1" width="100%">
         <thead>
             <tr>
                 <th>I. Mga Violations o Paglabag ng Empleyado sa Company Policies at Memorandums</th>
@@ -225,11 +230,11 @@
         </tbody>
     </table>
 
-    <div>
-        <table class="ack_table table table-bordered">
+    <div style="margin-top: 10px;">
+        <table class="ack_table table-bordered" border="1" width="100%">
             <tr>
-                <th class="w-50">Acknowledged and Received By:</th>
-                <th class="w-50">Noted By:</th>
+                <th class="w-50 text-center">Acknowledged and Received By:</th>
+                <th class="w-50 text-center">Noted By:</th>
             </tr>
             <tr>
                 <th class="blank-cell"></th>
