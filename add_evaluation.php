@@ -52,8 +52,8 @@ require('./questions.php');
 <div class="body_">
 
     <div class="container">
-        <h2 class="lead fs-4 text-center">Add Evaluation</h2>
-        <h2 class="display-6 text-center">You are evaluator <?php echo $supervisorCount?></h2>
+        <h2 class="lead fs-4 text-center">Add Evaluation <strong>[ <?php echo $supervisorCount?> ]</strong></h2>
+        <p class="text-center" style="margin: 10px 0 10px 0 !important;">Bigyan ng iskor ang empleyado mula: <strong>1</strong> (Pinakamababa) hanggang <strong>10</strong> (Pinakamataas).</p>
         <form action="save_evaluation.php" method="POST">
             <input type="hidden" name="emp_id" value="<?php echo $empId; ?>">
             <input type="hidden" name="period_id" value="<?php echo $periodId; ?>">

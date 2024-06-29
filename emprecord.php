@@ -10,12 +10,9 @@
         $result = mysqli_query($conn, $sql);
         
         if (mysqli_num_rows($result) == 1) {
-            // Login successful
-            // Perform any additional logic or redirection here
             echo "<script>window.location.href = 'emprecord.php';</script>";
             exit();
         } else {
-            // Login failed
             echo '<script>alert("Invalid username or password"); window.history.back();</script>';
         }
     }

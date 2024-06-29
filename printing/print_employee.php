@@ -118,7 +118,7 @@
         </tr>
     </table>
 
-    <p class="text-center pink"style="margin: 10px 0 10px 0 !important;">Bigyan ng iskor ang empleyado mula: <strong>1</strong> (Pinakamababa) hanggang <strong>10</strong> (Pinakamataas).</p>
+    <p class="text-center pink" style="margin: 10px 0 10px 0 !important;">Bigyan ng iskor ang empleyado mula: <strong>1</strong> (Pinakamababa) hanggang <strong>10</strong> (Pinakamataas).</p>
 
     <table class="score_table table-bordered" border="1" width="100%">
         <thead>

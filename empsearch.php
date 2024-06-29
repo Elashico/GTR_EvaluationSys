@@ -95,7 +95,6 @@ $positionsResult = mysqli_query($conn, $sql);
         </div>
     </div>
 
-
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
