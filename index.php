@@ -32,7 +32,7 @@
     <img src="styles/GTRLOGO.png" alt="Company Logo" class="logo">
     <h3 class="display-5 mb-4">Employee Evaluation</h3>
     
-    <form action="emprecord.php" method="post">
+    <form action="./mainpage.php" method="post">
         <fieldset class="text-center d-flex flex-column mb-3">
             <hr>
             <input name="username" class="mb-3 mt-3 form-control" type="text" placeholder="Username" style="width: 80%; margin-left:10%" required>

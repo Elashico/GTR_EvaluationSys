@@ -81,15 +81,18 @@ $positionsResult = mysqli_query($conn, $sql);
             $employeesResult = mysqli_query($conn, $sql);
 
             echo '<div id="employeeList" class="mt-3"><ul class="list-group">';
+// pasted 
             if (mysqli_num_rows($employeesResult) > 0) {
                 while ($row = mysqli_fetch_assoc($employeesResult)) {
                     $emp_id = htmlspecialchars($row['emp_id']);
                     $emp_name = htmlspecialchars($row['emp_lname'] . ', ' . $row['emp_fname']);
-                    echo "<li class=\"list-group-item\"><a class=\"text-capitalize text-dark text-decoration-none\" href=\"emprecord.php?emp_id=$emp_id\">$emp_name</a></li>";
+                    // Add a data attribute to store emp_id
+                    echo "<li class=\"list-group-item\"><a href=\"#\" class=\"employee-link text-capitalize text-dark text-decoration-none\" data-emp-id=\"$emp_id\">$emp_name</a></li>";
                 }
             } else {
                 echo '<li class="list-group-item">No employees found.</li>';
             }
+// endpaste
             echo '</ul></div>';
             ?>
         </div>

@@ -29,5 +29,4 @@ $questions_ = [
     11 => '11. Mabilis matuto at may kakayahan ding ituro ang…',
     12 => '12. Madami ang natatapos na trabaho sa loob ng duty…',
     13 => '13. Pinipili ang mga trabaho na dapat unahin at…'
-];
-            
+];     

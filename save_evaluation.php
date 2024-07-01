@@ -64,12 +64,12 @@ if (
     if (mysqli_stmt_error($stmt)) {
         die('Error executing MySQL statement: ' . mysqli_stmt_error($stmt));
     } else {
-        echo "<script>alert('Evaluation SAVED');window.opener.location.reload();window.close();</script>";
+        echo '<script>window.opener.saveEvaluation(); window.close();</script>';
     }
-    
     // Close statement and connection
     mysqli_stmt_close($stmt);
     mysqli_close($conn);
+    
 } else {
     die('Invalid parameters or missing form data.');
 }

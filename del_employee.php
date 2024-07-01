@@ -6,7 +6,7 @@ if (isset($_GET['emp_id']) && !empty($_GET['emp_id'])) {
     
     $deleteSql = "DELETE FROM tbl_employee WHERE emp_id = $empId";
     if (mysqli_query($conn, $deleteSql)) {
-        header("Location: emprecord.php");
+        header("Location: mainpage.php");
     } else {
         echo json_encode(['status' => 'error', 'message' => 'Failed to delete employee.']);
     }
